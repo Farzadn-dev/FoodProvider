@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="Services\RabbitMQ\Facade\" />
+    <Folder Include="Services\RabbitMQ\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FoodProviderAPI.Common\FoodProviderAPI.Common.csproj" />
+  </ItemGroup>
+
 </Project>
