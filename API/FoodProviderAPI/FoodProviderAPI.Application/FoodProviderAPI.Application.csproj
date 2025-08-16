@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\" />
-    <Folder Include="Services\RabbitMQ\Facade\" />
     <Folder Include="Services\RabbitMQ\Queries\" />
   </ItemGroup>
 
