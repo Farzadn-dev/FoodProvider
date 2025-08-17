@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUpdater", "DbUpdater\DbUpdater.csproj", "{AA592334-0A7B-47EA-870A-22A3C1DDC00C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA592334-0A7B-47EA-870A-22A3C1DDC00C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA592334-0A7B-47EA-870A-22A3C1DDC00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA592334-0A7B-47EA-870A-22A3C1DDC00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA592334-0A7B-47EA-870A-22A3C1DDC00C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91C54944-714D-471E-BA16-A0C11F391905}
+	EndGlobalSection
+EndGlobal
