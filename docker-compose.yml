@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redisDb:
+    image: redis:7
+    container_name: redisDb
+
+  redisCache:
+    image: redis:7
+    container_name: redisCache
+
+  dataReader:
+    build:
+      context: ./DataReader
+      dockerfile: Dockerfile
+    container_name: dataReader
+    depends_on:
+      - rabbitmq
+      - redisDb
+    environment:
+      RABBIT_HOST_NAME: rabbitmq
+      RABBIT_REQUEST_QUEUE: search-request-queue
+      RABBIT_RESPONSE_QUEUE: file-create-request-queue
+      RABBIT_PORT: "5672"
+      RABBIT_USER_NAME: guest
+      RABBIT_PASSWORD: guest
+
+      REDIS_HOST_NAME: redisDb
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+
+  fileCreator:
+    build:
+      context: ./FileCreator
+      dockerfile: Dockerfile
+    container_name: fileCreator
+    depends_on:
+      - rabbitmq
+    environment:
+      OUTPUT_PATH: /app/output
+      RABBIT_HOST_NAME: rabbitmq
+      RABBIT_REQUEST_QUEUE: file-create-request-queue
+      RABBIT_RESPONSE_QUEUE: update-db-request-queue
+      RABBIT_PORT: "5672"
+      RABBIT_USER_NAME: guest
+      RABBIT_PASSWORD: guest
+    volumes:
+      - ./output:/app/output
+
+  dbUpdater:
+    build:
+      context: ./DbUpdater
+      dockerfile: Dockerfile
+    container_name: dbUpdater
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redisCache
+    environment:
+      RABBIT_HOST_NAME: rabbitmq
+      RABBIT_REQUEST_QUEUE: update-db-request-queue
+      RABBIT_PORT: "5672"
+      RABBIT_USER_NAME: guest
+      RABBIT_PASSWORD: guest
+
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: postgres
+
+      REDIS_HOST_NAME: redisCache
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+    volumes:
+      - ./output:/app/output
+
+volumes:
+  pgdata:

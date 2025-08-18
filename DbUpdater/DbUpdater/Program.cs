@@ -21,13 +21,6 @@ if (string.IsNullOrEmpty(rabbitRequestQueue))
     Environment.Exit(128);
 }
 
-var rabbitResponseQueue = Environment.GetEnvironmentVariable("RABBIT_RESPONSE_QUEUE");
-if (string.IsNullOrEmpty(rabbitResponseQueue))
-{
-    Console.WriteLine("RABBIT_RESPONSE_QUEUE environment variable is not set.");
-    Environment.Exit(128);
-}
-
 var rabbitPort = Environment.GetEnvironmentVariable("RABBIT_PORT") ?? "5672";
 var rabbitUserName = Environment.GetEnvironmentVariable("RABBIT_USER_NAME") ?? "guest";
 var rabbitPassword = Environment.GetEnvironmentVariable("RABBIT_PASSWORD") ?? "guest";
