@@ -12,7 +12,7 @@ namespace FoodProviderAPI.EndPoint.Routes
             var route = app.MapGroup("/api/v1/food");
 
             route
-                .MapGet("search", Search)
+                .MapPost("search", Search)
                 .WithName("Search")
                 .WithTags(tags);
 

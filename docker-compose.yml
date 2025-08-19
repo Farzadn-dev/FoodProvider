@@ -1,15 +1,17 @@
-version: '3.8'
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
+    ports:
+    - "5672:5672"     # AMQP protocol (used by clients)
+    - "15672:15672"   # Management UI (web dashboard)
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
+
   postgres:
-    image: postgres:15
+    image: postgres
     container_name: postgres
     environment:
       POSTGRES_USER: postgres
@@ -19,18 +21,20 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   redisDb:
-    image: redis:7
-    container_name: redisDb
+      image: redis
+      container_name: redisDb
+      ports:
+        - "6379:6379"  # Expose Redis port for redisDb
 
   redisCache:
-    image: redis:7
+    image: redis
     container_name: redisCache
 
-  dataReader:
+  data-reader:
     build:
-      context: ./DataReader
+      context: ./DataReader/DataReader
       dockerfile: Dockerfile
-    container_name: dataReader
+    container_name: data-reader
     depends_on:
       - rabbitmq
       - redisDb
@@ -46,11 +50,11 @@ services:
       REDIS_PORT: "6379"
       REDIS_PASSWORD: ""
 
-  fileCreator:
+  file-creator:
     build:
-      context: ./FileCreator
+      context: ./FileCreator/FileCreator
       dockerfile: Dockerfile
-    container_name: fileCreator
+    container_name: file-creator
     depends_on:
       - rabbitmq
     environment:
@@ -64,11 +68,11 @@ services:
     volumes:
       - ./output:/app/output
 
-  dbUpdater:
+  db-updater:
     build:
-      context: ./DbUpdater
+      context: ./DbUpdater/DbUpdater
       dockerfile: Dockerfile
-    container_name: dbUpdater
+    container_name: db-updater
     depends_on:
       - rabbitmq
       - postgres

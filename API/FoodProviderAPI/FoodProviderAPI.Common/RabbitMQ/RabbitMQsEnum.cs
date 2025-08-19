@@ -2,6 +2,6 @@
 {
     public enum RabbitMQsEnum
     {
-        RedisBroker,
+        rabbitmq,
     }
 }

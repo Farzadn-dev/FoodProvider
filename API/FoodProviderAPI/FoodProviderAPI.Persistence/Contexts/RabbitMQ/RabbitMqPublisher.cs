@@ -9,7 +9,7 @@ namespace FoodProviderAPI.Persistence.Contexts.RabbitMQ
 {
     public class RabbitMqPublisher(IRabbitMqChannelProvider channelProvider) : IRabbitMqPublisher
     {
-        public async Task<ResultDto> PublishMessageAsync(string rabbitName, string queueName, byte[] message, CancellationToken ct = default)
+        private async Task<ResultDto> PublishMessageAsync(string rabbitName, string queueName, byte[] message, CancellationToken ct = default)
         {
             ResultDto<IChannel> result = await channelProvider.GetChannelAsync(rabbitName);
             if (!result.IsSuccess || result.Data == null || !result.Data.IsOpen)
@@ -21,7 +21,7 @@ namespace FoodProviderAPI.Persistence.Contexts.RabbitMQ
             return ResultDto.Success();
         }
 
-        public async Task<ResultDto> PublishMessageAsync(string rabbitName, string queueName, string message, CancellationToken ct = default)
+        private async Task<ResultDto> PublishMessageAsync(string rabbitName, string queueName, string message, CancellationToken ct = default)
         {
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
             return await PublishMessageAsync(rabbitName, queueName, messageBytes, ct);
@@ -36,7 +36,7 @@ namespace FoodProviderAPI.Persistence.Contexts.RabbitMQ
             return await PublishMessageAsync(rabbitName, queueName, json, ct);
         }
 
-        public async Task<ResultDto> PublishMessageAsync<T>(RabbitMqRouteDto route, List<T> messages, CancellationToken ct = default)
+        public async Task<ResultDto> PublishMessageAsync<T>(RabbitMqRouteDto route, T messages, CancellationToken ct = default)
         {
             return await PublishMessageAsync(route.RabbitName, route.QueueName, messages, ct);
         }
