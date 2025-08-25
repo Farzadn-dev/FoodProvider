@@ -3,8 +3,8 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-    - "5672:5672"     # AMQP protocol (used by clients)
-    - "15672:15672"   # Management UI (web dashboard)
+      - "5672:5672"     # AMQP protocol (used by clients)
+      - "15672:15672"   # Management UI (web dashboard)
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -19,6 +19,9 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"  # maps container port 5432 → host port 5432
+
 
   redisDb:
       image: redis
